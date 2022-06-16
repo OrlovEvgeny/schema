@@ -14,14 +14,11 @@ import (
 
 // NewDecoder returns a new Decoder.
 func NewDecoder() *Decoder {
-	return &Decoder{cache: newCache(), filedNameAliases: make(filedNameAliases)}
+	return &Decoder{cache: newCache()}
 }
-
-type filedNameAliases map[string]string
 
 // Decoder decodes values from a map[string][]string to a struct.
 type Decoder struct {
-	filedNameAliases  filedNameAliases
 	cache             *cache
 	zeroEmpty         bool
 	ignoreUnknownKeys bool
@@ -31,10 +28,6 @@ type Decoder struct {
 // The default tag is "schema".
 func (d *Decoder) SetAliasTag(tag string) {
 	d.cache.tag = tag
-}
-
-func (d *Decoder) SetFieldNameAlias(name string, alias string) {
-	d.filedNameAliases[name] = alias
 }
 
 // ZeroEmpty controls the behaviour when the decoder encounters empty values
@@ -83,9 +76,6 @@ func (d *Decoder) Decode(dst interface{}, src map[string][]string) error {
 	t := v.Type()
 	errors := MultiError{}
 	for path, values := range src {
-		if aliasFiled, ok := d.filedNameAliases[path]; ok {
-			path = aliasFiled
-		}
 		if parts, err := d.cache.parsePath(path, t); err == nil {
 			if err = d.decode(v, path, parts, values); err != nil {
 				errors[path] = err
