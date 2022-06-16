@@ -748,6 +748,24 @@ func TestSetAliasTag(t *testing.T) {
 	}
 }
 
+type S24 struct {
+	ID int `schema:"user_id"`
+}
+
+func TestSetFieldNameAlias(t *testing.T) {
+	data := map[string][]string{
+		"id": {"1024"},
+	}
+
+	s := S24{}
+	dec := NewDecoder()
+	dec.SetFieldNameAlias("id", "user_id")
+	dec.Decode(&s, data)
+	if s.ID != 1024 {
+		t.Fatalf("Bad value: got %q, want %q", s.ID, "1024")
+	}
+}
+
 func TestZeroEmpty(t *testing.T) {
 	data := map[string][]string{
 		"F01": {""},
