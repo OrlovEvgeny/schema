@@ -466,20 +466,7 @@ type ConversionError struct {
 }
 
 func (e ConversionError) Error() string {
-	var output string
-
-	if e.Index < 0 {
-		output = fmt.Sprintf("schema: error converting value for %q", e.Key)
-	} else {
-		output = fmt.Sprintf("schema: error converting value for index %d of %q",
-			e.Index, e.Key)
-	}
-
-	if e.Err != nil {
-		output = fmt.Sprintf("%s. Details: %s", output, e.Err)
-	}
-
-	return output
+	return fmt.Sprintf("wrong value of the %s parameter", e.Key)
 }
 
 // UnknownKeyError stores information about an unknown key in the source map.
@@ -488,7 +475,7 @@ type UnknownKeyError struct {
 }
 
 func (e UnknownKeyError) Error() string {
-	return fmt.Sprintf("schema: invalid path %q", e.Key)
+	return fmt.Sprintf("invalid parameter %s", e.Key)
 }
 
 // EmptyFieldError stores information about an empty required field.
@@ -497,7 +484,7 @@ type EmptyFieldError struct {
 }
 
 func (e EmptyFieldError) Error() string {
-	return fmt.Sprintf("%v is empty", e.Key)
+	return fmt.Sprintf("%s is empty", e.Key)
 }
 
 // MultiError stores multiple decoding errors.
