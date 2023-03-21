@@ -484,7 +484,7 @@ type EmptyFieldError struct {
 }
 
 func (e EmptyFieldError) Error() string {
-	return fmt.Sprintf("%s is empty", e.Key)
+	return fmt.Sprintf("missing required parameter %s", e.Key)
 }
 
 // MultiError stores multiple decoding errors.
